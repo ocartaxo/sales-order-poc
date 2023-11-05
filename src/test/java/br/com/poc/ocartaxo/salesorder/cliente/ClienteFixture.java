@@ -1,6 +1,6 @@
 package br.com.poc.ocartaxo.salesorder.cliente;
 
-import br.com.poc.ocartaxo.salesorder.dto.CadastroClienteRequest;
+import br.com.poc.ocartaxo.salesorder.dto.ClienteCadastroRequest;
 import br.com.poc.ocartaxo.salesorder.dto.DocumentoRequest;
 import br.com.poc.ocartaxo.salesorder.dto.EnderecoRequest;
 import br.com.poc.ocartaxo.salesorder.enums.TipoDocumento;
@@ -33,8 +33,8 @@ public final class ClienteFixture {
         return c;
     }
 
-    public static CadastroClienteRequest clienteValidoRequest() {
-        return new CadastroClienteRequest(
+    public static ClienteCadastroRequest clienteValidoRequest() {
+        return new ClienteCadastroRequest(
                 "José da Silva",
                 "jose.silva@email.com",
                 new DocumentoRequest("393.044.950-16", TipoDocumento.CPF),
@@ -42,8 +42,8 @@ public final class ClienteFixture {
         );
     }
 
-    public static CadastroClienteRequest clienteRequestCpfInvalido() {
-        return new CadastroClienteRequest(
+    public static ClienteCadastroRequest clienteRequestCpfInvalido() {
+        return new ClienteCadastroRequest(
                 "José da Silva",
                 "jose.silva@email.com",
                 new DocumentoRequest("393.044.950", TipoDocumento.CPF),
@@ -51,8 +51,8 @@ public final class ClienteFixture {
         );
     }
 
-    public static CadastroClienteRequest clienteRequestCnpjInvalido() {
-        return new CadastroClienteRequest(
+    public static ClienteCadastroRequest clienteRequestCnpjInvalido() {
+        return new ClienteCadastroRequest(
                 "José da Silva",
                 "jose.silva@email.com",
                 new DocumentoRequest("73.605.1700001-73", TipoDocumento.CNPJ),
@@ -60,8 +60,8 @@ public final class ClienteFixture {
         );
     }
 
-    public static CadastroClienteRequest clienteRequestEmailInvalido() {
-        return new CadastroClienteRequest(
+    public static ClienteCadastroRequest clienteRequestEmailInvalido() {
+        return new ClienteCadastroRequest(
                 "",
                 "jose.silvaemail.com",
                 new DocumentoRequest("393.044.950-16", TipoDocumento.CPF),
@@ -69,8 +69,8 @@ public final class ClienteFixture {
         );
     }
 
-    public static CadastroClienteRequest clienteRequestNomeInvalido() {
-        return new CadastroClienteRequest(
+    public static ClienteCadastroRequest clienteRequestNomeInvalido() {
+        return new ClienteCadastroRequest(
                 "",
                 "jose.silva@email.com",
                 new DocumentoRequest("393.044.950-16", TipoDocumento.CPF),

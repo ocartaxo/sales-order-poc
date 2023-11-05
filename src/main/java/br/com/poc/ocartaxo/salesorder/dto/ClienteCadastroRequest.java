@@ -2,7 +2,7 @@ package br.com.poc.ocartaxo.salesorder.dto;
 
 import java.util.List;
 
-public record CadastroClienteRequest(
+public record ClienteCadastroRequest(
         String nome,
         String email,
         DocumentoRequest documento,

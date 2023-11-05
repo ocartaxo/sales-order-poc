@@ -1,8 +1,8 @@
 package br.com.poc.ocartaxo.salesorder.validacao;
 
-import br.com.poc.ocartaxo.salesorder.dto.CadastroClienteRequest;
+import br.com.poc.ocartaxo.salesorder.dto.ClienteCadastroRequest;
 
 public interface ValidadorCliente {
 
-    void validaCadastroCliente(CadastroClienteRequest request);
+    void validaCadastroCliente(ClienteCadastroRequest request);
 }
