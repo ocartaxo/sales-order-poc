@@ -10,4 +10,6 @@ public interface ClientesService {
     ClienteResponse cadastrarNovoCliente(ClienteCadastroRequest request);
 
     Page<ClienteResponse> buscarTodosClientes(Pageable pageable);
+
+    ClienteResponse buscarClientePorId(Long id);
 }

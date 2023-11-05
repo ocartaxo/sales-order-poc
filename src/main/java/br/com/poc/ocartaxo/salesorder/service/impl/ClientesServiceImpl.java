@@ -41,4 +41,18 @@ public class ClientesServiceImpl implements ClientesService {
         log.info("Listando %d clientes ná página %d".formatted(pageable.getPageSize(), pageable.getPageNumber()));
         return repository.findAll(pageable).map(mapper::converteParaDTO);
     }
+
+    @Override
+    public ClienteResponse buscarClientePorId(Long id) {
+
+        final var cliente = repository.findById(id);
+
+        if(cliente.isEmpty()){
+            throw new ClienteNaoEncontradoException("O cliente de id `%d` não está cadastrado!".formatted(id));
+        }
+
+        return mapper.converteParaDTO(cliente.get());
+    }
+
+
 }

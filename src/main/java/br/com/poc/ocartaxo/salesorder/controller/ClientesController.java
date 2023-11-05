@@ -30,7 +30,10 @@ public class ClientesController {
     }
 
 
-
+    @GetMapping("/{id}")
+    public ResponseEntity<ClienteResponse> exibir(@PathVariable Long id){
+        return ResponseEntity.ok(service.buscarClientePorId(id));
+    }
 
     @GetMapping
     public ResponseEntity<Page<ClienteResponse>> listar(@PageableDefault(size=5)Pageable pageable){
