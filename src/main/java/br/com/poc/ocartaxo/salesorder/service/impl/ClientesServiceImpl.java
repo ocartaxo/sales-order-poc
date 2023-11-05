@@ -1,13 +1,16 @@
 package br.com.poc.ocartaxo.salesorder.service.impl;
 
-import br.com.poc.ocartaxo.salesorder.dto.CadastroClienteRequest;
+import br.com.poc.ocartaxo.salesorder.dto.ClienteCadastroRequest;
 import br.com.poc.ocartaxo.salesorder.dto.ClienteResponse;
+import br.com.poc.ocartaxo.salesorder.infra.exception.ClienteNaoEncontradoException;
 import br.com.poc.ocartaxo.salesorder.mapper.ClienteMapper;
 import br.com.poc.ocartaxo.salesorder.repository.ClientesRepository;
 import br.com.poc.ocartaxo.salesorder.service.ClientesService;
 import br.com.poc.ocartaxo.salesorder.validacao.ValidadorCliente;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -21,15 +24,21 @@ public class ClientesServiceImpl implements ClientesService {
 
 
     @Override
-    public ClienteResponse cadastraNovoCliente(CadastroClienteRequest request) {
-        log.info("Cadastrando o cliente %s".formatted(request.nome()));
+    public ClienteResponse cadastraNovoCliente(ClienteCadastroRequest body) {
+        log.info("Cadastrando o cliente %s".formatted(body.nome()));
 
-        validadorCliente.validaCadastroCliente(request);
+        validadorCliente.validaCadastroCliente(body);
 
-        final var entidade = mapper.converteParaEntidade(request);
+        final var entidade = mapper.converteParaEntidade(body);
 
         repository.save(entidade);
 
         return mapper.converteParaDTO(entidade);
+    }
+
+    @Override
+    public Page<ClienteResponse> buscarTodosClientes(Pageable pageable) {
+        log.info("Listando %d clientes ná página %d".formatted(pageable.getPageSize(), pageable.getPageNumber()));
+        return repository.findAll(pageable).map(mapper::converteParaDTO);
     }
 }
