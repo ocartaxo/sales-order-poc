@@ -19,15 +19,18 @@ public class ClientesController {
     private final ClientesService service;
 
     @PostMapping
-    public ResponseEntity<ClienteResponse> cadastra(
+    public ResponseEntity<ClienteResponse> cadastrar(
             @RequestBody ClienteCadastroRequest body,
             UriComponentsBuilder builder
     ){
-        final var response = service.cadastraNovoCliente(body);
+        final var response = service.cadastrarNovoCliente(body);
         final var uri = builder.path("/api/cliente/{id}").buildAndExpand(response.id()).toUri();
 
         return ResponseEntity.created(uri).body(response);
     }
+
+
+
 
     @GetMapping
     public ResponseEntity<Page<ClienteResponse>> listar(@PageableDefault(size=5)Pageable pageable){

@@ -24,7 +24,7 @@ public class ClientesServiceImpl implements ClientesService {
 
 
     @Override
-    public ClienteResponse cadastraNovoCliente(ClienteCadastroRequest body) {
+    public ClienteResponse cadastrarNovoCliente(ClienteCadastroRequest body) {
         log.info("Cadastrando o cliente %s".formatted(body.nome()));
 
         validadorCliente.validaCadastroCliente(body);

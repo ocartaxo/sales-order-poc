@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ClientesService {
 
-    ClienteResponse cadastraNovoCliente(ClienteCadastroRequest request);
+    ClienteResponse cadastrarNovoCliente(ClienteCadastroRequest request);
 
     Page<ClienteResponse> buscarTodosClientes(Pageable pageable);
 }
