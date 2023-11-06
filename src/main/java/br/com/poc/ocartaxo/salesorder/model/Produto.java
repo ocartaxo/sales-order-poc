@@ -1,5 +1,6 @@
 package br.com.poc.ocartaxo.salesorder.model;
 
+import br.com.poc.ocartaxo.salesorder.dto.ProdutoAtualizacaoRequest;
 import br.com.poc.ocartaxo.salesorder.enums.CategoriaProduto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,4 +26,9 @@ public class Produto {
     private BigDecimal valor;
 
     private int quantidadeEstoque;
+
+    public void atualiza(ProdutoAtualizacaoRequest body) {
+        this.valor = body.valor();
+        this.quantidadeEstoque = body.quantidadeEstoque();
+    }
 }
