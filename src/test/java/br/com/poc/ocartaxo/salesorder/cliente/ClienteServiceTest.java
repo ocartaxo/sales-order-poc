@@ -35,7 +35,7 @@ public class ClienteServiceTest {
     public void testeCadastroClienteValido() {
         final var novoCliente = ClienteFixture.clienteValidoRequest();
 
-        Assertions.assertDoesNotThrow(() -> service.cadastraNovoCliente(novoCliente));
+        Assertions.assertDoesNotThrow(() -> service.cadastrarNovoCliente(novoCliente));
     }
 
     @Test
@@ -43,7 +43,7 @@ public class ClienteServiceTest {
     public void testeCadastroClienteCpfInvalido() {
         final var novoCliente = ClienteFixture.clienteRequestCpfInvalido();
 
-        Assertions.assertThrows(CpfInvalidoException.class, () -> service.cadastraNovoCliente(novoCliente));
+        Assertions.assertThrows(CpfInvalidoException.class, () -> service.cadastrarNovoCliente(novoCliente));
     }
 
 
@@ -52,7 +52,7 @@ public class ClienteServiceTest {
     public void testeCadastroClienteCnpjInvalido() {
         final var novoCliente = ClienteFixture.clienteRequestCnpjInvalido();
 
-        Assertions.assertThrows(CnpjInvalidoException.class, () -> service.cadastraNovoCliente(novoCliente));
+        Assertions.assertThrows(CnpjInvalidoException.class, () -> service.cadastrarNovoCliente(novoCliente));
     }
 
     @Test
@@ -60,7 +60,7 @@ public class ClienteServiceTest {
     public void testeCadastroClienteEmailInvalido() {
         final var novoCliente = ClienteFixture.clienteRequestEmailInvalido();
 
-        Assertions.assertThrows(EmailInvalidoException.class, () -> service.cadastraNovoCliente(novoCliente));
+        Assertions.assertThrows(EmailInvalidoException.class, () -> service.cadastrarNovoCliente(novoCliente));
     }
 
     @Test
@@ -68,6 +68,6 @@ public class ClienteServiceTest {
     public void testeCadastroClienteNomeInvalido() {
         final var novoCliente = ClienteFixture.clienteRequestNomeInvalido();
 
-        Assertions.assertThrows(CadastroClienteException.class, () -> service.cadastraNovoCliente(novoCliente));
+        Assertions.assertThrows(CadastroClienteException.class, () -> service.cadastrarNovoCliente(novoCliente));
     }
 }
