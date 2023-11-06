@@ -1,5 +1,6 @@
 package br.com.poc.ocartaxo.salesorder.controller;
 
+import br.com.poc.ocartaxo.salesorder.dto.ProdutoAtualizacaoRequest;
 import br.com.poc.ocartaxo.salesorder.dto.ProdutoCadastroRequest;
 import br.com.poc.ocartaxo.salesorder.dto.ProdutoResponse;
 import br.com.poc.ocartaxo.salesorder.model.Produto;
@@ -40,4 +41,11 @@ public class ProdutosController {
         return ResponseEntity.ok(service.listarTodosProdutos(pageable));
     }
 
+    @RequestMapping(value = "/{id}", method = {RequestMethod.PUT, RequestMethod.PATCH})
+    public ResponseEntity<ProdutoResponse> atualizar(
+            @PathVariable Long id,
+            @RequestBody ProdutoAtualizacaoRequest body
+    ){
+        return ResponseEntity.ok(service.atualizarProduto(id, body));
+    }
 }

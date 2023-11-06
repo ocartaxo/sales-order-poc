@@ -1,5 +1,6 @@
 package br.com.poc.ocartaxo.salesorder.service.impl;
 
+import br.com.poc.ocartaxo.salesorder.dto.ProdutoAtualizacaoRequest;
 import br.com.poc.ocartaxo.salesorder.dto.ProdutoCadastroRequest;
 import br.com.poc.ocartaxo.salesorder.dto.ProdutoResponse;
 import br.com.poc.ocartaxo.salesorder.infra.exception.ProdutoNaoEncontradoException;
@@ -46,5 +47,21 @@ public class ProdutosServiceImpl implements ProdutosService {
     public Page<ProdutoResponse> listarTodosProdutos(Pageable pageable) {
         log.info("Listando os %d produtos da página %d".formatted(pageable.getPageSize(), pageable.getPageNumber()));
         return repository.findAll(pageable).map(mapper::converteParaDto);
+    }
+
+    @Override
+    public ProdutoResponse atualizarProduto(Long id, ProdutoAtualizacaoRequest body) {
+        log.info("Atualizando o produto de id %d".formatted(id));
+        final var op = repository.findById(id);
+
+        if (op.isEmpty()){
+            throw new ProdutoNaoEncontradoException("Produto de id `%d` não cadastrado!".formatted(id));
+        }
+
+        final var produto = op.get();
+
+        produto.atualiza(body);
+
+        return mapper.converteParaDto(produto);
     }
 }
