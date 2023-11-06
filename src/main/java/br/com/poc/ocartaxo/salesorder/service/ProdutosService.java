@@ -14,4 +14,6 @@ public interface ProdutosService {
     Page<ProdutoResponse> listarTodosProdutos(Pageable pageable);
 
     ProdutoResponse atualizarProduto(Long id, ProdutoAtualizacaoRequest body);
+
+    void deletarProduto(Long id);
 }

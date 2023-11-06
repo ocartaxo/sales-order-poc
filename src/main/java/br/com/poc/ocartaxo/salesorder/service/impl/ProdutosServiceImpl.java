@@ -64,4 +64,9 @@ public class ProdutosServiceImpl implements ProdutosService {
 
         return mapper.converteParaDto(produto);
     }
+
+    @Override
+    public void deletarProduto(Long id) {
+        repository.deleteById(id);
+    }
 }
