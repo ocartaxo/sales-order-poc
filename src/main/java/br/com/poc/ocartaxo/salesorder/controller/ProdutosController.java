@@ -5,6 +5,9 @@ import br.com.poc.ocartaxo.salesorder.dto.ProdutoResponse;
 import br.com.poc.ocartaxo.salesorder.model.Produto;
 import br.com.poc.ocartaxo.salesorder.service.ProdutosService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -30,6 +33,11 @@ public class ProdutosController {
     @GetMapping("/{id}")
     public ResponseEntity<ProdutoResponse> exibir(@PathVariable Long id){
         return ResponseEntity.ok(service.buscarProduto(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<ProdutoResponse>> listar(@PageableDefault(size = 5)Pageable pageable){
+        return ResponseEntity.ok(service.listarTodosProdutos(pageable));
     }
 
 }

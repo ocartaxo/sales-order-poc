@@ -8,6 +8,8 @@ import br.com.poc.ocartaxo.salesorder.repository.ProdutosRepository;
 import br.com.poc.ocartaxo.salesorder.service.ProdutosService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -20,7 +22,7 @@ public class ProdutosServiceImpl implements ProdutosService {
 
     @Override
     public ProdutoResponse cadastrarNovoProduto(ProdutoCadastroRequest body) {
-
+        log.info("Cadastrando o produto `%s`".formatted(body.descricao()));
         final var produto = mapper.converteParaEntidade(body);
 
         repository.save(produto);
@@ -30,7 +32,7 @@ public class ProdutosServiceImpl implements ProdutosService {
 
     @Override
     public ProdutoResponse buscarProduto(Long id) {
-
+        log.info("Buscando o produto de id %d".formatted(id));
         final var op = repository.findById(id);
 
         if (op.isEmpty()){
@@ -38,5 +40,11 @@ public class ProdutosServiceImpl implements ProdutosService {
         }
 
         return mapper.converteParaDto(op.get());
+    }
+
+    @Override
+    public Page<ProdutoResponse> listarTodosProdutos(Pageable pageable) {
+        log.info("Listando os %d produtos da página %d".formatted(pageable.getPageSize(), pageable.getPageNumber()));
+        return repository.findAll(pageable).map(mapper::converteParaDto);
     }
 }
