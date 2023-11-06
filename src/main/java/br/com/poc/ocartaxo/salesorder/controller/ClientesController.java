@@ -1,5 +1,6 @@
 package br.com.poc.ocartaxo.salesorder.controller;
 
+import br.com.poc.ocartaxo.salesorder.dto.ClienteAtualizacaoRequest;
 import br.com.poc.ocartaxo.salesorder.dto.ClienteCadastroRequest;
 import br.com.poc.ocartaxo.salesorder.dto.ClienteResponse;
 import br.com.poc.ocartaxo.salesorder.service.ClientesService;
@@ -39,4 +40,15 @@ public class ClientesController {
     public ResponseEntity<Page<ClienteResponse>> listar(@PageableDefault(size=5)Pageable pageable){
         return ResponseEntity.ok(service.buscarTodosClientes(pageable));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ClienteResponse> atualizar(
+            @PathVariable Long id,
+            @RequestBody ClienteAtualizacaoRequest body
+    ){
+        return ResponseEntity.ok(service.atualizarCliente(id, body));
+    }
+
+
+
 }

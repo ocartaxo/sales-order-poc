@@ -1,7 +1,9 @@
 package br.com.poc.ocartaxo.salesorder.model;
 
+import br.com.poc.ocartaxo.salesorder.dto.ClienteAtualizacaoRequest;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor
+@EqualsAndHashCode(of = {"id", "nome", "email", "documento"})
 public class Cliente {
 
     @Id
@@ -26,4 +29,9 @@ public class Cliente {
     )
     private List<Endereco> enderecos;
 
+
+    public void atualiza(ClienteAtualizacaoRequest atualizacao){
+        this.nome = atualizacao.nome();
+        this.email = atualizacao.email();
+    }
 }

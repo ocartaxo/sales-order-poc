@@ -1,5 +1,6 @@
 package br.com.poc.ocartaxo.salesorder.service.impl;
 
+import br.com.poc.ocartaxo.salesorder.dto.ClienteAtualizacaoRequest;
 import br.com.poc.ocartaxo.salesorder.dto.ClienteCadastroRequest;
 import br.com.poc.ocartaxo.salesorder.dto.ClienteResponse;
 import br.com.poc.ocartaxo.salesorder.infra.exception.ClienteNaoEncontradoException;
@@ -54,5 +55,19 @@ public class ClientesServiceImpl implements ClientesService {
         return mapper.converteParaDTO(cliente.get());
     }
 
+    @Override
+    public ClienteResponse atualizarCliente(Long id, ClienteAtualizacaoRequest body) {
+        final var op = repository.findById(id);
 
+        if(op.isEmpty()){
+            throw new ClienteNaoEncontradoException("O cliente de id `%d` não está cadastrado!".formatted(id));
+        }
+
+        validadorCliente.validaAtualizacaoCliente(body);
+
+        final var cliente = op.get();
+        cliente.atualiza(body);
+
+        return mapper.converteParaDTO(cliente);
+    }
 }

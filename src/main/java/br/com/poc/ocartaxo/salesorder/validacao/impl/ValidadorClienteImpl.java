@@ -1,5 +1,6 @@
 package br.com.poc.ocartaxo.salesorder.validacao.impl;
 
+import br.com.poc.ocartaxo.salesorder.dto.ClienteAtualizacaoRequest;
 import br.com.poc.ocartaxo.salesorder.dto.ClienteCadastroRequest;
 import br.com.poc.ocartaxo.salesorder.enums.TipoDocumento;
 import br.com.poc.ocartaxo.salesorder.infra.exception.CadastroClienteException;
@@ -33,5 +34,12 @@ public class ValidadorClienteImpl implements ValidadorCliente {
         }
     }
 
-
+    @Override
+    public void validaAtualizacaoCliente(ClienteAtualizacaoRequest body) {
+        log.info("Validando a atualização no cliente `%s`".formatted(body.nome()));
+        validadorEmail.valida(body.email());
+        if (body.nome().isEmpty()) {
+            throw new CadastroClienteException("Nome cliente vazio!");
+        }
+    }
 }
