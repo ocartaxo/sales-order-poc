@@ -5,4 +5,6 @@ import br.com.poc.ocartaxo.salesorder.dto.ProdutoResponse;
 
 public interface ProdutosService {
     ProdutoResponse cadastrarNovoProduto(ProdutoCadastroRequest body);
+
+    ProdutoResponse buscarProduto(Long id);
 }
