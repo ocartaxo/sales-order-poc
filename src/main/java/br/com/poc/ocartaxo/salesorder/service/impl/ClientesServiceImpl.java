@@ -70,4 +70,9 @@ public class ClientesServiceImpl implements ClientesService {
 
         return mapper.converteParaDTO(cliente);
     }
+
+    @Override
+    public void deletarClientePorId(Long id) {
+        repository.deleteById(id);
+    }
 }

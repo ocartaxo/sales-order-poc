@@ -15,4 +15,6 @@ public interface ClientesService {
     ClienteResponse buscarClientePorId(Long id);
 
     ClienteResponse atualizarCliente(Long id, ClienteAtualizacaoRequest body);
+
+    void deletarClientePorId(Long id);
 }
