@@ -1,6 +1,7 @@
 package br.com.poc.ocartaxo.salesorder.mapper.impl;
 
 import br.com.poc.ocartaxo.salesorder.dto.ClienteCadastroRequest;
+import br.com.poc.ocartaxo.salesorder.dto.ClienteDetalhesResponse;
 import br.com.poc.ocartaxo.salesorder.dto.ClienteResponse;
 import br.com.poc.ocartaxo.salesorder.mapper.ClienteMapper;
 import br.com.poc.ocartaxo.salesorder.model.Cliente;
@@ -30,7 +31,17 @@ public class ClienteMapperImpl implements ClienteMapper {
     }
 
     @Override
-    public ClienteResponse converteParaDTO(Cliente entidade) {
-        return new ClienteResponse(entidade.getId(), entidade.getNome(), entidade.getEmail());
+    public ClienteDetalhesResponse converteParaDtoDetalhada(Cliente cliente) {
+        return new ClienteDetalhesResponse(
+                cliente.getId(),
+                cliente.getNome(),
+                cliente.getEmail(),
+                cliente.getEnderecos().stream().map(enderecoMapper::converte).toList()
+        );
+    }
+
+    @Override
+    public ClienteResponse converteParaDto(Cliente cliente) {
+        return new ClienteResponse(cliente.getId(),cliente.getNome(),cliente.getEmail());
     }
 }
