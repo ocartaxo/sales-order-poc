@@ -1,6 +1,7 @@
 package br.com.poc.ocartaxo.salesorder.infra.api;
 
 import br.com.poc.ocartaxo.salesorder.infra.exception.CadastroClienteException;
+import br.com.poc.ocartaxo.salesorder.infra.exception.CadastroProdutoException;
 import br.com.poc.ocartaxo.salesorder.infra.exception.ClienteNaoEncontradoException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -44,6 +45,20 @@ public class ErrorHandler {
                 HttpStatus.NOT_FOUND.value(),
                 request.getRequestURI(),
                 "Ocorreu um erro ao buscar pelo cliente.",
+                ex.getMessage()
+        ));
+    }
+
+    @ExceptionHandler(CadastroProdutoException.class)
+    public ResponseEntity<ApiErrorResponse> gerenciaErroCadastroProduto(
+            CadastroProdutoException ex,
+            HttpServletRequest request
+    ){
+        return ResponseEntity.badRequest().body(new ApiErrorResponse(
+                LocalDateTime.now().format(df),
+                HttpStatus.BAD_REQUEST.value(),
+                request.getRequestURI(),
+                "Ocorreu um erro ao cadastrar um novo produto",
                 ex.getMessage()
         ));
     }

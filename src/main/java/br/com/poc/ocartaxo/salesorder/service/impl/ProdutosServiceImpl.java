@@ -7,6 +7,7 @@ import br.com.poc.ocartaxo.salesorder.infra.exception.ProdutoNaoEncontradoExcept
 import br.com.poc.ocartaxo.salesorder.mapper.ProdutoMapper;
 import br.com.poc.ocartaxo.salesorder.repository.ProdutosRepository;
 import br.com.poc.ocartaxo.salesorder.service.ProdutosService;
+import br.com.poc.ocartaxo.salesorder.validacao.ValidadorProduto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -20,10 +21,14 @@ public class ProdutosServiceImpl implements ProdutosService {
 
     private final ProdutosRepository repository;
     private final ProdutoMapper mapper;
+    private final ValidadorProduto validador;
 
     @Override
     public ProdutoResponse cadastrarNovoProduto(ProdutoCadastroRequest body) {
         log.info("Cadastrando o produto `%s`".formatted(body.descricao()));
+
+        validador.validaCadastroProduto(body);
+
         final var produto = mapper.converteParaEntidade(body);
 
         repository.save(produto);
