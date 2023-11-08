@@ -4,6 +4,6 @@ import java.util.List;
 
 public record PedidoCadastroRequest(
         Long clienteId,
-        List<Long> produtos
+        List<ItensPedido> produtos
 ) {
 }
