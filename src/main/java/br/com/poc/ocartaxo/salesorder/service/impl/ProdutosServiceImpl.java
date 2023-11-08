@@ -25,9 +25,10 @@ public class ProdutosServiceImpl implements ProdutosService {
 
     @Override
     public ProdutoResponse cadastrarNovoProduto(ProdutoCadastroRequest body) {
-        log.info("Cadastrando o produto `%s`".formatted(body.descricao()));
 
         validador.validaCadastroProduto(body);
+
+        log.info("Cadastrando o produto `%s`".formatted(body.descricao()));
 
         final var produto = mapper.converteParaEntidade(body);
 
@@ -41,7 +42,7 @@ public class ProdutosServiceImpl implements ProdutosService {
         log.info("Buscando o produto de id %d".formatted(id));
         final var op = repository.findById(id);
 
-        if (op.isEmpty()){
+        if (op.isEmpty()) {
             throw new ProdutoNaoEncontradoException("Produto de id `%d` não cadastrado!".formatted(id));
         }
 
@@ -56,10 +57,15 @@ public class ProdutosServiceImpl implements ProdutosService {
 
     @Override
     public ProdutoResponse atualizarProduto(Long id, ProdutoAtualizacaoRequest body) {
+        validador.validaAtualizacaoProduto(body);
+
+
         log.info("Atualizando o produto de id %d".formatted(id));
+
+
         final var op = repository.findById(id);
 
-        if (op.isEmpty()){
+        if (op.isEmpty()) {
             throw new ProdutoNaoEncontradoException("Produto de id `%d` não cadastrado!".formatted(id));
         }
 
