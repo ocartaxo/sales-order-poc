@@ -8,6 +8,7 @@ import br.com.poc.ocartaxo.salesorder.infra.exception.PedidoNaoEncontradoExcepti
 import br.com.poc.ocartaxo.salesorder.mapper.PedidoMapper;
 import br.com.poc.ocartaxo.salesorder.repository.PedidosRepository;
 import br.com.poc.ocartaxo.salesorder.service.PedidosService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,7 @@ public class PedidosServiceImpl implements PedidosService {
     private final PedidoMapper mapper;
 
     @Override
+    @Transactional
     public PedidoResponse cadastraNovoPedido(PedidoCadastroRequest body) {
 
         final var pedido = mapper.converteParaEntidade(body);
@@ -49,6 +51,7 @@ public class PedidosServiceImpl implements PedidosService {
     }
 
     @Override
+    @Transactional
     public PedidoDetalhesResponse atualizarPedido(Long id, PedidoAtualizacaoRequest body) {
         final var op = repository.findById(id);
         if(op.isEmpty()){
