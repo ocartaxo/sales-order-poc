@@ -8,6 +8,7 @@ import br.com.poc.ocartaxo.salesorder.mapper.ProdutoMapper;
 import br.com.poc.ocartaxo.salesorder.repository.ProdutosRepository;
 import br.com.poc.ocartaxo.salesorder.service.ProdutosService;
 import br.com.poc.ocartaxo.salesorder.validacao.ValidadorProduto;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,7 @@ public class ProdutosServiceImpl implements ProdutosService {
     private final ValidadorProduto validador;
 
     @Override
+    @Transactional
     public ProdutoResponse cadastrarNovoProduto(ProdutoCadastroRequest body) {
 
         validador.validaCadastroProduto(body);
@@ -56,6 +58,7 @@ public class ProdutosServiceImpl implements ProdutosService {
     }
 
     @Override
+    @Transactional
     public ProdutoResponse atualizarProduto(Long id, ProdutoAtualizacaoRequest body) {
         validador.validaAtualizacaoProduto(body);
 

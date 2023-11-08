@@ -8,6 +8,7 @@ import br.com.poc.ocartaxo.salesorder.mapper.ClienteMapper;
 import br.com.poc.ocartaxo.salesorder.repository.ClientesRepository;
 import br.com.poc.ocartaxo.salesorder.service.ClientesService;
 import br.com.poc.ocartaxo.salesorder.validacao.ValidadorCliente;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -56,6 +57,7 @@ public class ClientesServiceImpl implements ClientesService {
     }
 
     @Override
+    @Transactional
     public ClienteResponse atualizarCliente(Long id, ClienteAtualizacaoRequest body) {
         final var op = repository.findById(id);
 
