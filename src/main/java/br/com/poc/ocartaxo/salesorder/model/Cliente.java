@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -29,6 +30,8 @@ public class Cliente {
     )
     private List<Endereco> enderecos;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "cliente")
+    private List<Pedido> pedidos = new ArrayList<>();
 
     public void atualiza(ClienteAtualizacaoRequest atualizacao){
         this.nome = atualizacao.nome();
