@@ -1,9 +1,6 @@
 package br.com.poc.ocartaxo.salesorder.mapper.impl;
 
-import br.com.poc.ocartaxo.salesorder.dto.PedidoCadastroRequest;
-import br.com.poc.ocartaxo.salesorder.dto.PedidoDetalhesResponse;
-import br.com.poc.ocartaxo.salesorder.dto.PedidoResponse;
-import br.com.poc.ocartaxo.salesorder.dto.ProdutoResponse;
+import br.com.poc.ocartaxo.salesorder.dto.*;
 import br.com.poc.ocartaxo.salesorder.enums.TipoEndereco;
 import br.com.poc.ocartaxo.salesorder.mapper.ClienteMapper;
 import br.com.poc.ocartaxo.salesorder.mapper.PedidoMapper;
@@ -20,6 +17,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Component
@@ -42,9 +41,15 @@ public class PedidoMapperImpl implements PedidoMapper {
         final var cliente = pedidoClienteService.buscaClientePorId(body.clienteId());
         pedido.setCliente(cliente);
 
-        final var produtos = pedidoProdutoService.buscaProdutosPorId(body.produtos());
+        final var produtos = pedidoProdutoService.buscaProdutosPorId(body.produtos().stream().map(ItensPedido::produtoId).toList());
         pedido.setItensPedido(produtos);
-        pedido.setValorTotal(valorTotal(produtos));
+
+        final var pedidosResource = body.produtos().stream().map(pp -> new ItensPedidoResource(
+                pp.quantidade(),
+                produtos.stream().filter(p -> Objects.equals(pp.produtoId(), p.getId())).findFirst().orElseThrow().getValor()
+        )).toList();
+
+        pedido.setValorTotal(valorTotal(pedidosResource));
 
         final var enderecos = pedidoClienteService.getEnderecoEntregaCobranca(cliente);
         pedido.setEnderecoCobranca(enderecos.EnderecoCobranca());
@@ -73,7 +78,14 @@ public class PedidoMapperImpl implements PedidoMapper {
         );
     }
 
-    private BigDecimal valorTotal(Set<Produto> produtos){
-        return produtos.stream().map(Produto::getValor).reduce(BigDecimal.ZERO, BigDecimal::add);
+    private BigDecimal valorTotal(List<ItensPedidoResource> itensPedidoResources) {
+
+//        itensPedidoResources.stream().reduce(BigDecimal.ZERO,);
+        var acc = BigDecimal.ZERO;
+        for (final var r : itensPedidoResources){
+            acc = acc.add(r.valor().multiply(BigDecimal.valueOf(r.quantidade())));
+        }
+
+        return acc;
     }
 }
