@@ -2,13 +2,13 @@ package br.com.poc.ocartaxo.salesorder.controller;
 
 import br.com.poc.ocartaxo.salesorder.dto.ClienteAtualizacaoRequest;
 import br.com.poc.ocartaxo.salesorder.dto.ClienteCadastroRequest;
+import br.com.poc.ocartaxo.salesorder.dto.ClienteDetalhesResponse;
 import br.com.poc.ocartaxo.salesorder.dto.ClienteResponse;
 import br.com.poc.ocartaxo.salesorder.service.ClientesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -21,7 +21,7 @@ public class ClientesController {
     private final ClientesService service;
 
     @PostMapping
-    public ResponseEntity<ClienteResponse> cadastrar(
+    public ResponseEntity<ClienteDetalhesResponse> cadastrar(
             @RequestBody ClienteCadastroRequest body,
             UriComponentsBuilder builder
     ){
@@ -33,7 +33,7 @@ public class ClientesController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClienteResponse> exibir(@PathVariable Long id){
+    public ResponseEntity<ClienteDetalhesResponse> exibir(@PathVariable Long id){
         return ResponseEntity.ok(service.buscarClientePorId(id));
     }
 
@@ -43,7 +43,7 @@ public class ClientesController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClienteResponse> atualizar(
+    public ResponseEntity<ClienteDetalhesResponse> atualizar(
             @PathVariable Long id,
             @RequestBody ClienteAtualizacaoRequest body
     ){

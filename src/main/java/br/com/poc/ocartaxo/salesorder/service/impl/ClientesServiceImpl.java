@@ -2,6 +2,7 @@ package br.com.poc.ocartaxo.salesorder.service.impl;
 
 import br.com.poc.ocartaxo.salesorder.dto.ClienteAtualizacaoRequest;
 import br.com.poc.ocartaxo.salesorder.dto.ClienteCadastroRequest;
+import br.com.poc.ocartaxo.salesorder.dto.ClienteDetalhesResponse;
 import br.com.poc.ocartaxo.salesorder.dto.ClienteResponse;
 import br.com.poc.ocartaxo.salesorder.infra.exception.ClienteNaoEncontradoException;
 import br.com.poc.ocartaxo.salesorder.mapper.ClienteMapper;
@@ -25,7 +26,7 @@ public class ClientesServiceImpl implements ClientesService {
 
 
     @Override
-    public ClienteResponse cadastrarNovoCliente(ClienteCadastroRequest body) {
+    public ClienteDetalhesResponse cadastrarNovoCliente(ClienteCadastroRequest body) {
         log.info("Cadastrando o cliente %s".formatted(body.nome()));
 
         validadorCliente.validaCadastroCliente(body);
@@ -34,17 +35,17 @@ public class ClientesServiceImpl implements ClientesService {
 
         repository.save(entidade);
 
-        return mapper.converteParaDTO(entidade);
+        return mapper.converteParaDtoDetalhada(entidade);
     }
 
     @Override
     public Page<ClienteResponse> buscarTodosClientes(Pageable pageable) {
         log.info("Listando %d clientes ná página %d".formatted(pageable.getPageSize(), pageable.getPageNumber()));
-        return repository.findAll(pageable).map(mapper::converteParaDTO);
+        return repository.findAll(pageable).map(mapper::converteParaDto);
     }
 
     @Override
-    public ClienteResponse buscarClientePorId(Long id) {
+    public ClienteDetalhesResponse buscarClientePorId(Long id) {
 
         final var cliente = repository.findById(id);
 
@@ -52,11 +53,11 @@ public class ClientesServiceImpl implements ClientesService {
             throw new ClienteNaoEncontradoException("O cliente de id `%d` não está cadastrado!".formatted(id));
         }
 
-        return mapper.converteParaDTO(cliente.get());
+        return mapper.converteParaDtoDetalhada(cliente.get());
     }
 
     @Override
-    public ClienteResponse atualizarCliente(Long id, ClienteAtualizacaoRequest body) {
+    public ClienteDetalhesResponse atualizarCliente(Long id, ClienteAtualizacaoRequest body) {
         final var op = repository.findById(id);
 
         if(op.isEmpty()){
@@ -68,7 +69,7 @@ public class ClientesServiceImpl implements ClientesService {
         final var cliente = op.get();
         cliente.atualiza(body);
 
-        return mapper.converteParaDTO(cliente);
+        return mapper.converteParaDtoDetalhada(cliente);
     }
 
     @Override
