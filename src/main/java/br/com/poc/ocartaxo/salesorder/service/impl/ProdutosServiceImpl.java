@@ -53,8 +53,8 @@ public class ProdutosServiceImpl implements ProdutosService {
 
     @Override
     public Page<ProdutoResponse> listarTodosProdutos(Pageable pageable) {
-        log.info("Listando os {} produtos da página {}}", pageable.getPageSize(), pageable.getPageSize());
-        return repository.buscaTodosProdutosEmEstoque(pageable).map(mapper::converteParaDto);
+        log.info("Listando os %d produtos da página %d".formatted(pageable.getPageSize(), pageable.getPageNumber()));
+        return repository.findAll(pageable).map(mapper::converteParaDto);
     }
 
     @Override
