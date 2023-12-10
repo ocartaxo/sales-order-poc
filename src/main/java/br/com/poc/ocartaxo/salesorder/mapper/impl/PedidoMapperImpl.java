@@ -30,7 +30,7 @@ public class PedidoMapperImpl implements PedidoMapper {
 
     @Override
     public Pedido converteParaEntidade(PedidoResource pedidoResource) {
-        log.info("Convertendo para entidade jpa = {}", pedidoResource);
+        log.info("Convertendo para entidade={}", pedidoResource);
         final var pedido = new Pedido();
 
         pedido.setCliente(pedidoResource.cliente());
