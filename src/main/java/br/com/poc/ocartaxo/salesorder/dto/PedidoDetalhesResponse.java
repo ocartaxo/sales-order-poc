@@ -12,9 +12,8 @@ public record PedidoDetalhesResponse(
         BigDecimal valorTotal,
         String data,
         StatusPedido statusPedido,
-        ClienteResponse clienteResponse,
-
-        List<ProdutoResponse> itensDoPedido
+        ClienteResponse cliente,
+        List<PedidoProdutoResponse> produtos
 
 ) {
 }

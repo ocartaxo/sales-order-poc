@@ -34,7 +34,7 @@ public class PedidosController {
 
     @GetMapping("/{id}")
     public ResponseEntity<PedidoDetalhesResponse> exibir(@PathVariable Long id) {
-        return ResponseEntity.ok(service.buscarPorId(id));
+        return ResponseEntity.ok(service.buscarPedidoPorId(id));
     }
 
     @GetMapping

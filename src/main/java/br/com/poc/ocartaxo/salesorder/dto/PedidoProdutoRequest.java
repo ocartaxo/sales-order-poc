@@ -1,6 +1,6 @@
 package br.com.poc.ocartaxo.salesorder.dto;
 
-public record ItensPedido(
+public record PedidoProdutoRequest(
         int quantidade,
         Long produtoId
 ) {

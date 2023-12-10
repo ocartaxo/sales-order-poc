@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 public interface PedidosService {
     PedidoResponse cadastraNovoPedido(PedidoCadastroRequest body);
 
-    PedidoDetalhesResponse buscarPorId(Long id);
+    PedidoDetalhesResponse buscarPedidoPorId(Long id);
 
     Page<PedidoResponse> listarTodosPedidos(Pageable pageable);
 
