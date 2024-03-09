@@ -1,11 +1,13 @@
 package br.com.poc.ocartaxo.salesorder.model;
 
 import br.com.poc.ocartaxo.salesorder.enums.StatusPedido;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -19,9 +21,6 @@ public class Pedido {
 
     private LocalDateTime data = LocalDateTime.now();
 
-    @Setter(value = AccessLevel.NONE)
-    private BigDecimal valorTotal;
-
     @ManyToOne
     private Cliente cliente;
 
@@ -32,15 +31,21 @@ public class Pedido {
     @Enumerated(EnumType.STRING)
     private StatusPedido status = StatusPedido.CONFIRMADO;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<PedidoProduto> produtos;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "itemPedidoPk.pedido", cascade = CascadeType.ALL)
+    private List<ItemPedido> produtos = new ArrayList<>();
+
+    @Transient
+    private BigDecimal totalValorPedido;
 
 
-    public void calculaValorTotal() {
-
-        this.valorTotal = produtos.stream()
-                .map(produtoPedido -> produtoPedido.getProduto().getValor()
-                .multiply(new BigDecimal(produtoPedido.getQuantidade())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    public BigDecimal getValorTotalPedido() {
+        return produtos.stream().map(ItemPedido::getValorTotalProduto).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
+
+    @Transient
+    public int getTotalProdutos() {
+        return produtos.size();
+    }
+
 }
