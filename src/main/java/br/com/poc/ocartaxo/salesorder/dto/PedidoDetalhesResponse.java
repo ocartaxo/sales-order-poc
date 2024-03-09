@@ -13,7 +13,7 @@ public record PedidoDetalhesResponse(
         String data,
         StatusPedido statusPedido,
         ClienteResponse cliente,
-        List<PedidoProdutoResponse> produtos
+        List<ItemPedidoResponse> produtos
 
 ) {
 }
