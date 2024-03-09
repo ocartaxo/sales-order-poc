@@ -27,7 +27,7 @@ public class Produto {
 
     private int quantidadeEstoque;
 
-    public void atualiza(ProdutoAtualizacaoRequest body) {
+    public void atualiza(final ProdutoAtualizacaoRequest body) {
         this.valor = body.valor();
         this.quantidadeEstoque = body.quantidadeEstoque();
     }
