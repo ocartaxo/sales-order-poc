@@ -1,11 +1,12 @@
 package br.com.poc.ocartaxo.salesorder.service.impl;
 
-import br.com.poc.ocartaxo.salesorder.domain.pedido.PedidoResource;
 import br.com.poc.ocartaxo.salesorder.dto.*;
 import br.com.poc.ocartaxo.salesorder.infra.exception.PedidoNaoEncontradoException;
 import br.com.poc.ocartaxo.salesorder.infra.exception.QuantidadeProdutoInsuficienteException;
 import br.com.poc.ocartaxo.salesorder.mapper.PedidoMapper;
-import br.com.poc.ocartaxo.salesorder.model.PedidoProduto;
+import br.com.poc.ocartaxo.salesorder.model.Pedido;
+import br.com.poc.ocartaxo.salesorder.model.ItemPedido;
+import br.com.poc.ocartaxo.salesorder.model.ItemPedidoPk;
 import br.com.poc.ocartaxo.salesorder.model.Produto;
 import br.com.poc.ocartaxo.salesorder.repository.ClientesRepository;
 import br.com.poc.ocartaxo.salesorder.repository.PedidosRepository;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 @Slf4j
 @Service
@@ -41,9 +43,9 @@ public class PedidosServiceImpl implements PedidosService {
 
 
         final var cliente = clientesRepository.findById(body.clienteId()).orElseThrow();
-        final var produtos = buscaProdutos(body.produtos());
 
-        final var pedido = mapper.converteParaEntidade(new PedidoResource(cliente, produtos));
+        final var pedido = mapper.converteParaEntidade(cliente);
+        pedido.setProdutos(verificaDisponibilidadeProdutos(body.produtos(), pedido));
 
         log.info("Cadastrando o pedido={}", pedido);
         pedidosRepository.save(pedido);
@@ -79,26 +81,46 @@ public class PedidosServiceImpl implements PedidosService {
         pedidosRepository.deleteById(id);
     }
 
-    private List<PedidoProduto> buscaProdutos(List<PedidoProdutoRequest> produtosPedido) {
+    private List<ItemPedido> verificaDisponibilidadeProdutos(
+            List<PedidoProdutoRequest> produtosPedido,
+            Pedido pedido
+    ) {
+
+        final var quantidadeProdutoEstoque = getQuantidadeProdutoEstoque(produtosPedido);
+
+        return quantidadeProdutoEstoque.entrySet().stream().map(entry -> validaProdutoEstoque(pedido, entry)).toList();
+
+    }
+
+    private ItemPedido validaProdutoEstoque(Pedido pedido, Entry<Produto, Integer> produtoQuantidade) {
+
+        final var produto = produtoQuantidade.getKey();
+        final var quantidadePedido = produtoQuantidade.getValue();
+
+        if (quantidadePedido > produto.getQuantidadeEstoque()) {
+            log.error("Quantidade de produto {} insuficiente em estoque: Disponível={}, Desejada={}",
+                    produto.getDescricao(), produto.getQuantidadeEstoque(), quantidadePedido);
+
+            throw new QuantidadeProdutoInsuficienteException(produto);
+        }
+
+        produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() - quantidadePedido);
+        return new ItemPedido(new ItemPedidoPk(pedido, produto), quantidadePedido);
+
+    }
+
+    private HashMap<Produto, Integer> getQuantidadeProdutoEstoque(List<PedidoProdutoRequest> produtosPedido){
+
+        final var quantidadeProduto = new HashMap<Produto, Integer>();
+
         final var produtoIds = produtosPedido.stream().map(PedidoProdutoRequest::produtoId).toList();
         final var produtos = produtosRepository.findAllById(produtoIds);
 
-        final var produtosHashTable = new HashMap<Long, Produto>();
-        produtos.forEach(produto -> produtosHashTable.put(produto.getId(), produto));
+        final var idProdutoTable = new HashMap<Long, Produto>();
+        produtos.forEach(produto -> idProdutoTable.put(produto.getId(), produto));
 
-        return produtosPedido.stream().map(pedidoProdutoRequest -> {
-            final var produto = produtosHashTable.get(pedidoProdutoRequest.produtoId());
-            final var quantidadeProdutoPedido = pedidoProdutoRequest.quantidade();
+        produtosPedido.forEach(pp -> quantidadeProduto.put(idProdutoTable.get(pp.produtoId()), pp.quantidade()));
 
-            if (quantidadeProdutoPedido > produto.getQuantidadeEstoque()) {
-                log.error("Quantidade de produto {} insuficiente em estoque: Disponível={}, Desejada={}",
-                        produto.getDescricao(), produto.getQuantidadeEstoque(), quantidadeProdutoPedido);
-
-                throw new QuantidadeProdutoInsuficienteException(produto);
-            }
-
-            return new PedidoProduto(null, produto, quantidadeProdutoPedido);
-
-        }).toList();
+        return quantidadeProduto;
     }
 }
