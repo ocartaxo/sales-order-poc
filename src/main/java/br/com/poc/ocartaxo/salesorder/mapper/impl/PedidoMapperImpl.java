@@ -1,11 +1,11 @@
 package br.com.poc.ocartaxo.salesorder.mapper.impl;
 
-import br.com.poc.ocartaxo.salesorder.domain.pedido.PedidoResource;
 import br.com.poc.ocartaxo.salesorder.dto.PedidoDetalhesResponse;
 import br.com.poc.ocartaxo.salesorder.dto.PedidoResponse;
 import br.com.poc.ocartaxo.salesorder.mapper.ClienteMapper;
 import br.com.poc.ocartaxo.salesorder.mapper.PedidoMapper;
-import br.com.poc.ocartaxo.salesorder.mapper.PedidoProdutoMapper;
+import br.com.poc.ocartaxo.salesorder.mapper.ItemPedidoMapper;
+import br.com.poc.ocartaxo.salesorder.model.Cliente;
 import br.com.poc.ocartaxo.salesorder.model.Pedido;
 import br.com.poc.ocartaxo.salesorder.service.EnderecoClienteService;
 import lombok.RequiredArgsConstructor;
@@ -22,24 +22,20 @@ public class PedidoMapperImpl implements PedidoMapper {
 
     private final EnderecoClienteService enderecoClienteService;
     private final ClienteMapper clienteMapper;
-    private final PedidoProdutoMapper pedidoProdutoMapper;
+    private final ItemPedidoMapper itemPedidoMapper;
 
     private static final DateTimeFormatter df = new DateTimeFormatterBuilder()
             .appendPattern("yyyy/MM/dd HH:mm:ss")
             .toFormatter();
 
     @Override
-    public Pedido converteParaEntidade(PedidoResource pedidoResource) {
-        log.info("Convertendo para entidade={}", pedidoResource);
+    public Pedido converteParaEntidade(Cliente cliente) {
+
         final var pedido = new Pedido();
 
-        pedido.setCliente(pedidoResource.cliente());
+        pedido.setCliente(cliente);
 
-        pedido.setProdutos(pedidoResource.produtosPedido());
-        pedido.calculaValorTotal();
-
-
-        final var enderecos = enderecoClienteService.getEnderecoEntregaCobranca(pedidoResource.cliente());
+        final var enderecos = enderecoClienteService.getEnderecoEntregaCobranca(cliente);
         pedido.setEnderecoCobranca(enderecos.EnderecoCobranca());
         pedido.setEnderecoEntrega(enderecos.enderecoEntrega());
 
@@ -49,10 +45,10 @@ public class PedidoMapperImpl implements PedidoMapper {
 
     @Override
     public PedidoResponse converteParaDTO(Pedido pedido) {
-        log.info("Convertendo para DTO resumida = {}", pedido);
+        log.info("Convertendo para DTO resumida, dto={}", pedido);
         return new PedidoResponse(
                 pedido.getId(),
-                pedido.getValorTotal(),
+                pedido.getValorTotalPedido(),
                 pedido.getData().format(df),
                 pedido.getStatus()
         );
@@ -60,15 +56,15 @@ public class PedidoMapperImpl implements PedidoMapper {
 
     @Override
     public PedidoDetalhesResponse converteParaDetalhesDTO(Pedido pedido) {
-        log.info("Converte para para DTO detalhada = {}", pedido);
+        log.info("Converte para para DTO detalhada, dto={}", pedido);
         return new PedidoDetalhesResponse(
                 pedido.getEnderecoEntrega(),
                 pedido.getEnderecoCobranca(),
-                pedido.getValorTotal(),
+                pedido.getValorTotalPedido(),
                 pedido.getData().format(df),
                 pedido.getStatus(),
                 clienteMapper.converteParaDTO(pedido.getCliente()),
-                pedido.getProdutos().stream().map(pedidoProdutoMapper::converteParaDto).toList()
+                pedido.getProdutos().stream().map(itemPedidoMapper::converteParaDto).toList()
         );
     }
 
