@@ -9,7 +9,7 @@ cadastrados, por consultas pelas rotas disponibilizadas.
 | :label: Tecnologias   | Java, Spring Boot, Spring Data JPA, Lombok H2 |
 
 ## Detalhes
-A aplicação foi desenvolvida utilizando Java 17 e Spring Boot na versão 3.15 e Gradle para gerenciamento de dependências. 
+O sistema foi criado utilizando Java 17 e Spring Boot na versão 3.15 e Gradle para gerenciamento de dependências. 
 As operações de banco de dados são feitas através das interfaces disponibilizadas pelo Spring Data JPA e, os dados são
 salvos em um arquivo utilizando H2 SQL _engine_. Além disso, o projeto respeita a arquitetura Controller-Service-Repository
 e a interação entre essas camadas são feitas por meio de interfaces do Java.
@@ -21,10 +21,7 @@ endereços, tipo de endereço (cobrança, entrega).
 - **Pedido de venda**: A venda deve conter os dados do cliente, endereço de entrega e cobrança, os dados de cada item discriminados
 individualmente, quantidade, valor unitário e o valor total do pedido.
 
-### Funcionalidades
-
-
-
-
-
- 
+## Funcionalidades
+ - [Clientes](users)
+ - [Produtos]()
+ - [Pedidos]()
