@@ -3,7 +3,7 @@ package br.com.poc.ocartaxo.salesorder.controller;
 import br.com.poc.ocartaxo.salesorder.dto.ProdutoAtualizacaoRequest;
 import br.com.poc.ocartaxo.salesorder.dto.ProdutoCadastroRequest;
 import br.com.poc.ocartaxo.salesorder.dto.ProdutoResponse;
-import br.com.poc.ocartaxo.salesorder.model.Produto;
+import br.com.poc.ocartaxo.salesorder.dto.ProdutoResumidoResponse;
 import br.com.poc.ocartaxo.salesorder.service.ProdutosService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,14 +21,14 @@ public class ProdutosController {
     private final ProdutosService service;
 
     @PostMapping
-    public ResponseEntity<ProdutoResponse> cadastrar(
+    public ResponseEntity<?> cadastrar(
             @RequestBody ProdutoCadastroRequest body,
             UriComponentsBuilder builder
     ){
         final var response = service.cadastrarNovoProduto(body);
         final var uri = builder.path("/api/produto/{id}").buildAndExpand(response.id()).toUri();
 
-        return ResponseEntity.created(uri).body(response);
+        return ResponseEntity.created(uri).build();
     }
 
     @GetMapping("/{id}")
@@ -37,7 +37,7 @@ public class ProdutosController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ProdutoResponse>> listar(@PageableDefault(size = 5)Pageable pageable){
+    public ResponseEntity<Page<ProdutoResumidoResponse>> listar(@PageableDefault(size = 5)Pageable pageable){
         return ResponseEntity.ok(service.listarTodosProdutos(pageable));
     }
 
