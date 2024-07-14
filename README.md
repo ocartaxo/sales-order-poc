@@ -23,5 +23,5 @@ individualmente, quantidade, valor unitário e o valor total do pedido.
 
 ## Funcionalidades
  - [Clientes](users.md)
- - [Produtos]()
+ - [Produtos](products.md)
  - [Pedidos]()
