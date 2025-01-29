@@ -22,6 +22,6 @@ endereços, tipo de endereço (cobrança, entrega).
 individualmente, quantidade, valor unitário e o valor total do pedido.
 
 ## Funcionalidades
- - [Clientes](users.md)
- - [Produtos]()
- - [Pedidos]()
+ - [Clientes](docs/users.md)
+ - [Produtos](docs/products.md)
+ - [Pedidos](docs/orders.md)
