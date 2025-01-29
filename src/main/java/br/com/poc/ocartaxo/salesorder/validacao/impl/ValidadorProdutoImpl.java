@@ -16,7 +16,7 @@ public class ValidadorProdutoImpl implements ValidadorProduto {
     @Override
     public void validaCadastroProduto(ProdutoCadastroRequest body) {
         log.info("Validando o produto para cadastro={}", body);
-        if (body.descricao().isEmpty() || body.quantidadeEstoque() <= 0 || ehPrecoInvalido(body.valor())) {
+        if (body.descricao().isBlank() || body.quantidadeEstoque() <= 0 || ehPrecoInvalido(body.valor())) {
             throw new CadastroProdutoException("Dados de cadastro do produto inválidos!");
         }
 
