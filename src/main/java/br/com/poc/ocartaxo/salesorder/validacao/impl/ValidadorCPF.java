@@ -1,6 +1,6 @@
 package br.com.poc.ocartaxo.salesorder.validacao.impl;
 
-import br.com.poc.ocartaxo.salesorder.infra.exception.CpfInvalidoException;
+import br.com.poc.ocartaxo.salesorder.infra.exception.DocumentoInvalidoException;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Pattern;
@@ -12,7 +12,7 @@ public class ValidadorCPF extends ValidadorDocumento {
     public void verificaDocumento(String cpf) {
 
         if (!(padrao.matcher(cpf).matches())){
-            throw new CpfInvalidoException("CPF com quantidade de caracteres inválida!");
+            throw new DocumentoInvalidoException("CPF com quantidade de caracteres inválida!");
         }
 
     }

@@ -1,6 +1,6 @@
 package br.com.poc.ocartaxo.salesorder.validacao.impl;
 
-import br.com.poc.ocartaxo.salesorder.infra.exception.CnpjInvalidoException;
+import br.com.poc.ocartaxo.salesorder.infra.exception.DocumentoInvalidoException;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Pattern;
@@ -11,7 +11,7 @@ public class ValidadorCNPJ extends ValidadorDocumento {
     @Override
     public void verificaDocumento(String cnpj) {
         if(!(padrao.matcher(cnpj).matches())){
-            throw new CnpjInvalidoException("CNPJ com quantidade de caracteres inválida!");
+            throw new DocumentoInvalidoException("CNPJ com quantidade de caracteres inválida!");
         }
     }
 }
