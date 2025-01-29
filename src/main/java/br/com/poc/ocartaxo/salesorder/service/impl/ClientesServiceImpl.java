@@ -35,7 +35,7 @@ public class ClientesServiceImpl implements ClientesService {
     public ClienteResponse cadastrarNovoCliente(ClienteCadastroRequest body) {
         log.info("Cadastrando o cliente %s".formatted(body.nome()));
 
-        validadorCliente.validaCadastroCliente(body);
+        validadorCliente.validaDadosCadastroCliente(body);
 
         final var entidade = mapper.converteParaEntidade(body);
 
@@ -60,6 +60,7 @@ public class ClientesServiceImpl implements ClientesService {
      * Busca um cliente de determinado id
      * @param id Id do cliente que deseja encontrar
      * @return Informações de um cliente
+     * @throws ClienteNaoEncontradoException exceção para cliente não cadastrado
      */
     @Override
     public ClienteResponse buscarClientePorId(Long id) {
@@ -76,6 +77,7 @@ public class ClientesServiceImpl implements ClientesService {
      * @param id id do cliente do cliente que deseja atualizar
      * @param body informações que devem ser atualizadas
      * @return Informações atualizadas do cleinte
+     * @throws ClienteNaoEncontradoException exceção para cliente não cadastrado
      */
 
     @Override
@@ -86,7 +88,7 @@ public class ClientesServiceImpl implements ClientesService {
                 new ClienteNaoEncontradoException("O cliente de id `%d` não está cadastrado!".formatted(id))
         );
 
-        validadorCliente.validaAtualizacaoCliente(body);
+        validadorCliente.validaDadosAtualizacaoCliente(body);
 
         cliente.atualiza(body);
 
