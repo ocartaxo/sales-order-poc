@@ -17,6 +17,7 @@ import br.com.poc.ocartaxo.salesorder.validacao.impl.ValidadorCNPJ;
 import br.com.poc.ocartaxo.salesorder.validacao.impl.ValidadorCPF;
 import br.com.poc.ocartaxo.salesorder.validacao.impl.ValidadorClienteImpl;
 import br.com.poc.ocartaxo.salesorder.validacao.impl.ValidadorEmail;
+import org.mockito.Mockito;
 
 import java.util.List;
 import java.util.Map;
@@ -86,9 +87,4 @@ public final class ClienteFixture {
                 new ValidadorEmail()
         );
     }
-
-    public static ClienteMapper mapper() {
-        return new ClienteMapperImpl(new EnderecoMapper(), new DocumentoMapper());
-    }
-
 }
