@@ -1,7 +1,8 @@
 package br.com.poc.ocartaxo.salesorder.cliente;
 
-import br.com.poc.ocartaxo.salesorder.infra.exception.InformacoesClienteInvalidaException;
 import br.com.poc.ocartaxo.salesorder.infra.exception.DocumentoInvalidoException;
+import br.com.poc.ocartaxo.salesorder.infra.exception.InformacoesClienteInvalidaException;
+import br.com.poc.ocartaxo.salesorder.mapper.ClienteMapper;
 import br.com.poc.ocartaxo.salesorder.model.Cliente;
 import br.com.poc.ocartaxo.salesorder.repository.ClientesRepository;
 import br.com.poc.ocartaxo.salesorder.service.ClientesService;
@@ -18,14 +19,16 @@ import static org.mockito.Mockito.when;
 public class ClienteServiceTest {
 
 
-    private final ClientesRepository repository = mock(ClientesRepository.class);
+    private final ClientesRepository mockRepository = mock(ClientesRepository.class);
+    private final ClienteMapper mockMapper = mock(ClienteMapper.class);
+
     private ClientesService service;
 
     @BeforeEach
     public void setup() {
-        service = new ClientesServiceImpl(ClienteFixture.mapper(), repository, ClienteFixture.validadorCliente());
+        service = new ClientesServiceImpl(mockMapper, mockRepository, ClienteFixture.validadorCliente());
 
-        when(repository.save(any(Cliente.class))).thenReturn(ClienteFixture.cliente());
+        when(mockRepository.save(any(Cliente.class))).thenReturn(ClienteFixture.cliente());
     }
 
     @Test
@@ -37,7 +40,7 @@ public class ClienteServiceTest {
     }
 
     @Test
-    @DisplayName("Deve lançar a exceção CpfInvalidoException quando o cliente cadastrado possuir cpf inválido")
+    @DisplayName("Deve lançar a exceção DocumentoInvalidoException quando o cliente cadastrado possuir cpf inválido")
     public void testeCadastroClienteCpfInvalido() {
         final var novoCliente = ClienteFixture.clienteRequestCpfInvalido();
 
@@ -46,7 +49,7 @@ public class ClienteServiceTest {
 
 
     @Test
-    @DisplayName("Deve lançar a exceção CnpjInvalidoException quando o cliente cadastrado possuir cnpj inválido")
+    @DisplayName("Deve lançar a exceção DocumentoInvalidoException quando o cliente cadastrado possuir cnpj inválido")
     public void testeCadastroClienteCnpjInvalido() {
         final var novoCliente = ClienteFixture.clienteRequestCnpjInvalido();
 
@@ -54,7 +57,7 @@ public class ClienteServiceTest {
     }
 
     @Test
-    @DisplayName("Deve lançar a exceção EmailInvalidoException quando o cliente cadastrado possuir email inválido")
+    @DisplayName("Deve lançar a exceção InformacoesClienteInvalidaException quando o cliente cadastrado possuir email inválido")
     public void testeCadastroClienteEmailInvalido() {
         final var novoCliente = ClienteFixture.clienteRequestEmailInvalido();
 
@@ -62,7 +65,7 @@ public class ClienteServiceTest {
     }
 
     @Test
-    @DisplayName("Deve lançar a exceção EmailInvalidoException quando o cliente cadastrado possuir email inválido")
+    @DisplayName("Deve lançar a exceção InformacoesClienteInvalidaException quando o cliente cadastrado possuir nome inválido")
     public void testeCadastroClienteNomeInvalido() {
         final var novoCliente = ClienteFixture.clienteRequestNomeInvalido();
 
