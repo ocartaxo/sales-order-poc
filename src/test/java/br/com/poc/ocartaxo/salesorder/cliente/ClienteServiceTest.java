@@ -1,9 +1,7 @@
 package br.com.poc.ocartaxo.salesorder.cliente;
 
-import br.com.poc.ocartaxo.salesorder.infra.exception.CadastroClienteException;
-import br.com.poc.ocartaxo.salesorder.infra.exception.CnpjInvalidoException;
-import br.com.poc.ocartaxo.salesorder.infra.exception.CpfInvalidoException;
-import br.com.poc.ocartaxo.salesorder.infra.exception.EmailInvalidoException;
+import br.com.poc.ocartaxo.salesorder.infra.exception.InformacoesClienteInvalidaException;
+import br.com.poc.ocartaxo.salesorder.infra.exception.DocumentoInvalidoException;
 import br.com.poc.ocartaxo.salesorder.model.Cliente;
 import br.com.poc.ocartaxo.salesorder.repository.ClientesRepository;
 import br.com.poc.ocartaxo.salesorder.service.ClientesService;
@@ -43,7 +41,7 @@ public class ClienteServiceTest {
     public void testeCadastroClienteCpfInvalido() {
         final var novoCliente = ClienteFixture.clienteRequestCpfInvalido();
 
-        Assertions.assertThrows(CpfInvalidoException.class, () -> service.cadastrarNovoCliente(novoCliente));
+        Assertions.assertThrows(DocumentoInvalidoException.class, () -> service.cadastrarNovoCliente(novoCliente));
     }
 
 
@@ -52,7 +50,7 @@ public class ClienteServiceTest {
     public void testeCadastroClienteCnpjInvalido() {
         final var novoCliente = ClienteFixture.clienteRequestCnpjInvalido();
 
-        Assertions.assertThrows(CnpjInvalidoException.class, () -> service.cadastrarNovoCliente(novoCliente));
+        Assertions.assertThrows(DocumentoInvalidoException.class, () -> service.cadastrarNovoCliente(novoCliente));
     }
 
     @Test
@@ -60,7 +58,7 @@ public class ClienteServiceTest {
     public void testeCadastroClienteEmailInvalido() {
         final var novoCliente = ClienteFixture.clienteRequestEmailInvalido();
 
-        Assertions.assertThrows(EmailInvalidoException.class, () -> service.cadastrarNovoCliente(novoCliente));
+        Assertions.assertThrows(InformacoesClienteInvalidaException.class, () -> service.cadastrarNovoCliente(novoCliente));
     }
 
     @Test
@@ -68,6 +66,6 @@ public class ClienteServiceTest {
     public void testeCadastroClienteNomeInvalido() {
         final var novoCliente = ClienteFixture.clienteRequestNomeInvalido();
 
-        Assertions.assertThrows(CadastroClienteException.class, () -> service.cadastrarNovoCliente(novoCliente));
+        Assertions.assertThrows(InformacoesClienteInvalidaException.class, () -> service.cadastrarNovoCliente(novoCliente));
     }
 }

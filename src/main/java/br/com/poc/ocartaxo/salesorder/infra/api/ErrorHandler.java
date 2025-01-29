@@ -1,6 +1,6 @@
 package br.com.poc.ocartaxo.salesorder.infra.api;
 
-import br.com.poc.ocartaxo.salesorder.infra.exception.CadastroClienteException;
+import br.com.poc.ocartaxo.salesorder.infra.exception.InformacoesClienteInvalidaException;
 import br.com.poc.ocartaxo.salesorder.infra.exception.CadastroProdutoException;
 import br.com.poc.ocartaxo.salesorder.infra.exception.ClienteNaoEncontradoException;
 import br.com.poc.ocartaxo.salesorder.infra.exception.ProdutoNaoEncontradoException;
@@ -21,9 +21,9 @@ public class ErrorHandler {
             .appendPattern("yyyy/MM/dd HH:mm:ss")
             .toFormatter();
 
-    @ExceptionHandler(CadastroClienteException.class)
+    @ExceptionHandler(InformacoesClienteInvalidaException.class)
     public ResponseEntity<ApiErrorResponse> gerenciaCadastroClienteError(
-            CadastroClienteException ex,
+            InformacoesClienteInvalidaException ex,
             HttpServletRequest request
     ) {
         return ResponseEntity.badRequest().body(new ApiErrorResponse(
