@@ -5,6 +5,6 @@ import br.com.poc.ocartaxo.salesorder.dto.ClienteCadastroRequest;
 
 public interface ValidadorCliente {
 
-    void validaCadastroCliente(ClienteCadastroRequest request);
-    void validaAtualizacaoCliente(ClienteAtualizacaoRequest body);
+    void validaDadosCadastroCliente(ClienteCadastroRequest request);
+    void validaDadosAtualizacaoCliente(ClienteAtualizacaoRequest body);
 }
