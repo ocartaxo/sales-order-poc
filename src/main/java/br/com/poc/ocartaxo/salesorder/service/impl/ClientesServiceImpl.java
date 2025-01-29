@@ -5,6 +5,7 @@ import br.com.poc.ocartaxo.salesorder.dto.ClienteCadastroRequest;
 import br.com.poc.ocartaxo.salesorder.dto.ClienteResponse;
 import br.com.poc.ocartaxo.salesorder.infra.exception.ClienteNaoEncontradoException;
 import br.com.poc.ocartaxo.salesorder.mapper.ClienteMapper;
+import br.com.poc.ocartaxo.salesorder.model.Cliente;
 import br.com.poc.ocartaxo.salesorder.repository.ClientesRepository;
 import br.com.poc.ocartaxo.salesorder.service.ClientesService;
 import br.com.poc.ocartaxo.salesorder.validacao.ValidadorCliente;
@@ -47,27 +48,23 @@ public class ClientesServiceImpl implements ClientesService {
     @Override
     public ClienteResponse buscarClientePorId(Long id) {
 
-        final var cliente = repository.findById(id);
+        Cliente cliente = repository.findById(id).orElseThrow(() ->
+                new ClienteNaoEncontradoException("O cliente de id `%d` não está cadastrado!".formatted(id))
+        );
 
-        if(cliente.isEmpty()){
-            throw new ClienteNaoEncontradoException("O cliente de id `%d` não está cadastrado!".formatted(id));
-        }
-
-        return mapper.converteParaDTO(cliente.get());
+        return mapper.converteParaDTO(cliente);
     }
 
     @Override
     @Transactional
     public ClienteResponse atualizarCliente(Long id, ClienteAtualizacaoRequest body) {
-        final var op = repository.findById(id);
 
-        if(op.isEmpty()){
-            throw new ClienteNaoEncontradoException("O cliente de id `%d` não está cadastrado!".formatted(id));
-        }
+        Cliente cliente = repository.findById(id).orElseThrow(() ->
+                new ClienteNaoEncontradoException("O cliente de id `%d` não está cadastrado!".formatted(id))
+        );
 
         validadorCliente.validaAtualizacaoCliente(body);
 
-        final var cliente = op.get();
         cliente.atualiza(body);
 
         return mapper.converteParaDTO(cliente);
@@ -77,4 +74,5 @@ public class ClientesServiceImpl implements ClientesService {
     public void deletarClientePorId(Long id) {
         repository.deleteById(id);
     }
+
 }
