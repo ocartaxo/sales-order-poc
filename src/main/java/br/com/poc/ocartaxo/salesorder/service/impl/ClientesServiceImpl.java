@@ -25,6 +25,11 @@ public class ClientesServiceImpl implements ClientesService {
     private final ClientesRepository repository;
     private final ValidadorCliente validadorCliente;
 
+    /***
+     * Cadastra um novo cliente
+     * @param body Informações necessárias para cadastrar um novo cliente
+     * @return Informações de um cliente
+     */
 
     @Override
     public ClienteResponse cadastrarNovoCliente(ClienteCadastroRequest body) {
@@ -39,12 +44,23 @@ public class ClientesServiceImpl implements ClientesService {
         return mapper.converteParaDTO(entidade);
     }
 
+    /**
+     * Busca por clientes de forma páginada
+     * @param pageable Filtros aplicados na busca do cliente
+     * @return Uma página contendo uma lista de clientes
+     */
+
     @Override
     public Page<ClienteResponse> buscarTodosClientes(Pageable pageable) {
         log.info("Listando %d clientes ná página %d".formatted(pageable.getPageSize(), pageable.getPageNumber()));
         return repository.findAll(pageable).map(mapper::converteParaDTO);
     }
 
+    /**
+     * Busca um cliente de determinado id
+     * @param id Id do cliente que deseja encontrar
+     * @return Informações de um cliente
+     */
     @Override
     public ClienteResponse buscarClientePorId(Long id) {
 
@@ -54,6 +70,13 @@ public class ClientesServiceImpl implements ClientesService {
 
         return mapper.converteParaDTO(cliente);
     }
+
+    /**
+     * Atualiza as informaçõs de um cliente de id correspondete
+     * @param id id do cliente do cliente que deseja atualizar
+     * @param body informações que devem ser atualizadas
+     * @return Informações atualizadas do cleinte
+     */
 
     @Override
     @Transactional
@@ -70,6 +93,10 @@ public class ClientesServiceImpl implements ClientesService {
         return mapper.converteParaDTO(cliente);
     }
 
+    /**
+     * Deleta um cliente de id correspondente
+     * @param id Id do cliente que desjea deletar
+     */
     @Override
     public void deletarClientePorId(Long id) {
         repository.deleteById(id);
