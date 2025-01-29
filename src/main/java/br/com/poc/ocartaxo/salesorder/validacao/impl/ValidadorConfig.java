@@ -1,6 +1,7 @@
 package br.com.poc.ocartaxo.salesorder.validacao.impl;
 
 import br.com.poc.ocartaxo.salesorder.enums.TipoDocumento;
+import br.com.poc.ocartaxo.salesorder.validacao.ValidadorDocumento;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
