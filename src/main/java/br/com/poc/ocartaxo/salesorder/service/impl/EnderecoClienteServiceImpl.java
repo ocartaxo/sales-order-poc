@@ -25,14 +25,21 @@ public class EnderecoClienteServiceImpl implements EnderecoClienteService {
             return new EnderecosPedido(enderecoAll.get().getLogradouro(), enderecoAll.get().getLogradouro());
         }
 
-        final var enderecoCobranca = enderecos.stream().filter( e -> e.getTipoEndereco() == TipoEndereco.COBRANCA).findFirst();
-        final var enderecoEntrega = enderecos.stream().filter(e -> TipoEndereco.ENTREGA.equals(e.getTipoEndereco())).findFirst();
+        final var enderecoCobranca = enderecos.stream()
+                .filter( e -> TipoEndereco.COBRANCA.equals(e.getTipoEndereco()))
+                .findFirst()
+                .orElseThrow(() ->
+                        new CadastroPedidoException("Endereço de cobrança não encontrado")
+                );
 
-        if (enderecoEntrega.isEmpty() || enderecoCobranca.isEmpty()){
-            throw new CadastroPedidoException("Não foi possível definir os enderecos de entrega e cobranca do pedido! do cliente %s".formatted(cliente.getNome()));
-        }
+        final var enderecoEntrega = enderecos.stream()
+                .filter(e -> TipoEndereco.ENTREGA.equals(e.getTipoEndereco()))
+                .findFirst()
+                .orElseThrow(() ->
+                        new CadastroPedidoException("Endereço de entrega não encontrado")
+                );
 
-        return new EnderecosPedido(enderecoEntrega.get().getLogradouro(), enderecoCobranca.get().getLogradouro());
+        return new EnderecosPedido(enderecoEntrega.getLogradouro(), enderecoCobranca.getLogradouro());
 
     }
 }
