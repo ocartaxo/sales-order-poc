@@ -3,11 +3,10 @@ package br.com.poc.ocartaxo.salesorder.service.impl;
 import br.com.poc.ocartaxo.salesorder.dto.*;
 import br.com.poc.ocartaxo.salesorder.infra.exception.PedidoInvalidoException;
 import br.com.poc.ocartaxo.salesorder.infra.exception.PedidoNaoEncontradoException;
-import br.com.poc.ocartaxo.salesorder.infra.exception.QuantidadeProdutoInsuficienteException;
 import br.com.poc.ocartaxo.salesorder.mapper.PedidoMapper;
-import br.com.poc.ocartaxo.salesorder.model.Pedido;
 import br.com.poc.ocartaxo.salesorder.model.ItemPedido;
 import br.com.poc.ocartaxo.salesorder.model.ItemPedidoPk;
+import br.com.poc.ocartaxo.salesorder.model.Pedido;
 import br.com.poc.ocartaxo.salesorder.model.Produto;
 import br.com.poc.ocartaxo.salesorder.repository.ClientesRepository;
 import br.com.poc.ocartaxo.salesorder.repository.PedidosRepository;
@@ -41,14 +40,16 @@ public class PedidosServiceImpl implements PedidosService {
      * Cria um novo pedido
      * @param body Informações necessárias para criar um pedido
      * @return Informações do pedido criado
-     * @throws QuantidadeProdutoInsuficienteException
+     * @throws PedidoInvalidoException
      */
     @Override
     @Transactional
     public PedidoResponse cadastraNovoPedido(PedidoCadastroRequest body) {
 
 
-        final var cliente = clientesRepository.findById(body.clienteId()).orElseThrow();
+        final var cliente = clientesRepository.findById(body.clienteId()).orElseThrow(() ->
+                new PedidoInvalidoException("Não é possível criar o pedido para o cliente %d não cadastrado"
+                        .formatted(body.clienteId())));
 
         final var pedido = mapper.converteParaEntidade(cliente);
         pedido.setProdutos(verificaDisponibilidadeProdutos(body.produtos(), pedido));
@@ -101,7 +102,7 @@ public class PedidosServiceImpl implements PedidosService {
 
     /**
      * Remove o pedido da base que corresponda ao id informado
-     * @param id
+     * @param id Id do produto que será removido
      */
 
     @Override
@@ -129,7 +130,10 @@ public class PedidosServiceImpl implements PedidosService {
             log.error("Quantidade de produto {} insuficiente em estoque: Disponível={}, Desejada={}",
                     produto.getDescricao(), produto.getQuantidadeEstoque(), quantidadePedido);
 
-            throw new QuantidadeProdutoInsuficienteException(produto);
+            throw new PedidoInvalidoException(
+                    "Existem poucas unidades do produto `%s` disponíveis em estoque. Quantidade em estoque: %d"
+                            .formatted(produto.getDescricao(), produto.getQuantidadeEstoque())
+            );
         }
 
         produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() - quantidadePedido);
