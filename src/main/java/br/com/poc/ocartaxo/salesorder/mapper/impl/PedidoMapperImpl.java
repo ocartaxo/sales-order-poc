@@ -7,7 +7,6 @@ import br.com.poc.ocartaxo.salesorder.mapper.PedidoMapper;
 import br.com.poc.ocartaxo.salesorder.mapper.ItemPedidoMapper;
 import br.com.poc.ocartaxo.salesorder.model.Cliente;
 import br.com.poc.ocartaxo.salesorder.model.Pedido;
-import br.com.poc.ocartaxo.salesorder.service.EnderecoClienteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -20,7 +19,7 @@ import java.time.format.DateTimeFormatterBuilder;
 @RequiredArgsConstructor
 public class PedidoMapperImpl implements PedidoMapper {
 
-    private final EnderecoClienteService enderecoClienteService;
+    private final EnderecoMapper enderecoMapper;
     private final ClienteMapper clienteMapper;
     private final ItemPedidoMapper itemPedidoMapper;
 
@@ -35,10 +34,9 @@ public class PedidoMapperImpl implements PedidoMapper {
 
         pedido.setCliente(cliente);
 
-        final var enderecos = enderecoClienteService.getEnderecoEntregaCobranca(cliente);
-        pedido.setEnderecoCobranca(enderecos.EnderecoCobranca());
+        final var enderecos = enderecoMapper.converteEnderecosPedido(cliente.getEnderecos());
+        pedido.setEnderecoCobranca(enderecos.enderecoCobranca());
         pedido.setEnderecoEntrega(enderecos.enderecoEntrega());
-
 
         return pedido;
     }
