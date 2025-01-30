@@ -1,9 +1,9 @@
-package br.com.poc.ocartaxo.salesorder.produto;
+package br.com.poc.ocartaxo.salesorder.service;
 
+import br.com.poc.ocartaxo.salesorder.fixture.ProdutoFixture;
 import br.com.poc.ocartaxo.salesorder.infra.exception.CadastroProdutoException;
 import br.com.poc.ocartaxo.salesorder.model.Produto;
 import br.com.poc.ocartaxo.salesorder.repository.ProdutosRepository;
-import br.com.poc.ocartaxo.salesorder.service.ProdutosService;
 import br.com.poc.ocartaxo.salesorder.service.impl.ProdutosServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

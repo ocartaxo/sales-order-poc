@@ -1,4 +1,4 @@
-package br.com.poc.ocartaxo.salesorder.produto;
+package br.com.poc.ocartaxo.salesorder.fixture;
 
 import br.com.poc.ocartaxo.salesorder.dto.ProdutoCadastroRequest;
 import br.com.poc.ocartaxo.salesorder.enums.CategoriaProduto;

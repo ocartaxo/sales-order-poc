@@ -1,11 +1,11 @@
-package br.com.poc.ocartaxo.salesorder.cliente;
+package br.com.poc.ocartaxo.salesorder.service;
 
+import br.com.poc.ocartaxo.salesorder.fixture.ClienteFixture;
 import br.com.poc.ocartaxo.salesorder.infra.exception.DocumentoInvalidoException;
 import br.com.poc.ocartaxo.salesorder.infra.exception.InformacoesClienteInvalidaException;
 import br.com.poc.ocartaxo.salesorder.mapper.ClienteMapper;
 import br.com.poc.ocartaxo.salesorder.model.Cliente;
 import br.com.poc.ocartaxo.salesorder.repository.ClientesRepository;
-import br.com.poc.ocartaxo.salesorder.service.ClientesService;
 import br.com.poc.ocartaxo.salesorder.service.impl.ClientesServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

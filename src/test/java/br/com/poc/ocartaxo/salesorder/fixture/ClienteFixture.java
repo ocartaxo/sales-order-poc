@@ -1,14 +1,10 @@
-package br.com.poc.ocartaxo.salesorder.cliente;
+package br.com.poc.ocartaxo.salesorder.fixture;
 
 import br.com.poc.ocartaxo.salesorder.dto.ClienteCadastroRequest;
 import br.com.poc.ocartaxo.salesorder.dto.DocumentoRequest;
 import br.com.poc.ocartaxo.salesorder.dto.EnderecoRequest;
 import br.com.poc.ocartaxo.salesorder.enums.TipoDocumento;
 import br.com.poc.ocartaxo.salesorder.enums.TipoEndereco;
-import br.com.poc.ocartaxo.salesorder.mapper.ClienteMapper;
-import br.com.poc.ocartaxo.salesorder.mapper.impl.ClienteMapperImpl;
-import br.com.poc.ocartaxo.salesorder.mapper.impl.DocumentoMapper;
-import br.com.poc.ocartaxo.salesorder.mapper.impl.EnderecoMapper;
 import br.com.poc.ocartaxo.salesorder.model.Cliente;
 import br.com.poc.ocartaxo.salesorder.model.Documento;
 import br.com.poc.ocartaxo.salesorder.model.Endereco;
@@ -17,7 +13,6 @@ import br.com.poc.ocartaxo.salesorder.validacao.impl.ValidadorCNPJ;
 import br.com.poc.ocartaxo.salesorder.validacao.impl.ValidadorCPF;
 import br.com.poc.ocartaxo.salesorder.validacao.impl.ValidadorClienteImpl;
 import br.com.poc.ocartaxo.salesorder.validacao.impl.ValidadorEmail;
-import org.mockito.Mockito;
 
 import java.util.List;
 import java.util.Map;
