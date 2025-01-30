@@ -1,9 +1,11 @@
 package br.com.poc.ocartaxo.salesorder.mapper.impl;
 
+import br.com.poc.ocartaxo.salesorder.domain.pedido.EnderecosPedido;
 import br.com.poc.ocartaxo.salesorder.dto.ClienteCadastroRequest;
 import br.com.poc.ocartaxo.salesorder.dto.ClienteResponse;
 import br.com.poc.ocartaxo.salesorder.mapper.ClienteMapper;
 import br.com.poc.ocartaxo.salesorder.model.Cliente;
+import br.com.poc.ocartaxo.salesorder.model.Endereco;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -33,4 +35,5 @@ public class ClienteMapperImpl implements ClienteMapper {
     public ClienteResponse converteParaDTO(Cliente entidade) {
         return new ClienteResponse(entidade.getId(), entidade.getNome(), entidade.getEmail());
     }
+
 }

@@ -28,30 +28,4 @@ public class EnderecoMapper {
         return new EnderecoResponse(response.getLogradouro(), response.getTipoEndereco());
     }
 
-    public EnderecosPedido converteEnderecosPedido(List<Endereco> enderecos) {
-        log.info("Enderecos={}", enderecos);
-
-        final var enderecoAll = enderecos.stream().filter(e-> e.getTipoEndereco() == TipoEndereco.ALL).findFirst();
-        if (enderecoAll.isPresent()){
-            return new EnderecosPedido(enderecoAll.get().getLogradouro(), enderecoAll.get().getLogradouro());
-        }
-
-        final var enderecoCobranca = enderecos.stream()
-                .filter( e -> TipoEndereco.COBRANCA.equals(e.getTipoEndereco()))
-                .findFirst()
-                .orElseThrow(() ->
-                        new CadastroPedidoException("Endereço de cobrança não encontrado")
-                );
-
-        final var enderecoEntrega = enderecos.stream()
-                .filter(e -> TipoEndereco.ENTREGA.equals(e.getTipoEndereco()))
-                .findFirst()
-                .orElseThrow(() ->
-                        new CadastroPedidoException("Endereço de entrega não encontrado")
-                );
-
-        return new EnderecosPedido(enderecoEntrega.getLogradouro(), enderecoCobranca.getLogradouro());
-
-    }
-
 }
