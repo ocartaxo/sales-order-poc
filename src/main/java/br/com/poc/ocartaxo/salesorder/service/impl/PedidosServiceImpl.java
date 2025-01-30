@@ -1,6 +1,7 @@
 package br.com.poc.ocartaxo.salesorder.service.impl;
 
 import br.com.poc.ocartaxo.salesorder.dto.*;
+import br.com.poc.ocartaxo.salesorder.infra.exception.PedidoInvalidoException;
 import br.com.poc.ocartaxo.salesorder.infra.exception.PedidoNaoEncontradoException;
 import br.com.poc.ocartaxo.salesorder.infra.exception.QuantidadeProdutoInsuficienteException;
 import br.com.poc.ocartaxo.salesorder.mapper.PedidoMapper;
@@ -36,7 +37,12 @@ public class PedidosServiceImpl implements PedidosService {
 
     private final ProdutosRepository produtosRepository;
 
-
+    /**
+     * Cria um novo pedido
+     * @param body Informações necessárias para criar um pedido
+     * @return Informações do pedido criado
+     * @throws QuantidadeProdutoInsuficienteException
+     */
     @Override
     @Transactional
     public PedidoResponse cadastraNovoPedido(PedidoCadastroRequest body) {
@@ -53,6 +59,11 @@ public class PedidosServiceImpl implements PedidosService {
         return mapper.converteParaDTO(pedido);
     }
 
+    /**
+     * Busca as informações de um pedido que corresnponda ao id informado
+     * @param id Id do produto na base
+     * @return Detalhes do pedido
+     */
     @Override
     public PedidoDetalhesResponse buscarPedidoPorId(Long id) {
 
@@ -61,11 +72,23 @@ public class PedidosServiceImpl implements PedidosService {
         return mapper.converteParaDetalhesDTO(pedido);
     }
 
+    /**
+     * Busca uma lista de pedidos que corresponda aos filtros
+     * @param pageable Filtros aplicados na busca
+     * @return Uma página com informações do pedido
+     */
     @Override
     public Page<PedidoResponse> listarTodosPedidos(Pageable pageable) {
         return pedidosRepository.findAll(pageable).map(mapper::converteParaDTO);
     }
 
+
+    /**
+     * Atualiza as informações de um pedido que corresponda ao id informado
+     * @param id Id do pedido que deseja atualizar
+     * @param body Informações que serão atualizadas no pedido
+     * @return Informações atualizadas do pedido
+     */
     @Override
     @Transactional
     public PedidoDetalhesResponse atualizarPedido(Long id, PedidoAtualizacaoRequest body) {
@@ -75,6 +98,11 @@ public class PedidosServiceImpl implements PedidosService {
 
         return mapper.converteParaDetalhesDTO(pedido);
     }
+
+    /**
+     * Remove o pedido da base que corresponda ao id informado
+     * @param id
+     */
 
     @Override
     public void deletarPorId(Long id) {
