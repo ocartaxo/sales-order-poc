@@ -5,6 +5,8 @@ import br.com.poc.ocartaxo.salesorder.dto.DocumentoRequest;
 import br.com.poc.ocartaxo.salesorder.dto.EnderecoRequest;
 import br.com.poc.ocartaxo.salesorder.enums.TipoDocumento;
 import br.com.poc.ocartaxo.salesorder.enums.TipoEndereco;
+import br.com.poc.ocartaxo.salesorder.mapper.ClienteMapper;
+import br.com.poc.ocartaxo.salesorder.mapper.impl.ClienteMapperImpl;
 import br.com.poc.ocartaxo.salesorder.model.Cliente;
 import br.com.poc.ocartaxo.salesorder.model.Documento;
 import br.com.poc.ocartaxo.salesorder.model.Endereco;
@@ -80,6 +82,13 @@ public final class ClienteFixture {
                        TipoDocumento.CPF, new ValidadorCPF()
                 ),
                 new ValidadorEmail()
+        );
+    }
+
+    public static ClienteMapper mapper() {
+        return new ClienteMapperImpl(
+                EnderecoFixture.mapper(),
+                DocumentoFixture.mapper()
         );
     }
 }
