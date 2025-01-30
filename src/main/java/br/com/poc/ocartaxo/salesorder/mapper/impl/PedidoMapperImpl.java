@@ -24,7 +24,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PedidoMapperImpl implements PedidoMapper {
 
-    private final EnderecoMapper enderecoMapper;
     private final ClienteMapper clienteMapper;
     private final ItemPedidoMapper itemPedidoMapper;
 
