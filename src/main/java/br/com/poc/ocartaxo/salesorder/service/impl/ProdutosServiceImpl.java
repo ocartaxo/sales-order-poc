@@ -37,9 +37,8 @@ public class ProdutosServiceImpl implements ProdutosService {
 
         log.info("Cadastrando o produto `%s`".formatted(body.descricao()));
 
-        final var produto = mapper.converteParaEntidade(body);
-
-        repository.save(produto);
+        var produto = mapper.converteParaEntidade(body);
+        produto = repository.save(produto);
 
         return mapper.converteParaDto(produto);
     }

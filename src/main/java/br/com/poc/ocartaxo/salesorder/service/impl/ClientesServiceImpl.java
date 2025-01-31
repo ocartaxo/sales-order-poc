@@ -37,11 +37,11 @@ public class ClientesServiceImpl implements ClientesService {
 
         validadorCliente.validaDadosCadastroCliente(body);
 
-        final var entidade = mapper.converteParaEntidade(body);
+        var cliente = mapper.converteParaEntidade(body);
 
-        repository.save(entidade);
+        cliente = repository.save(cliente);
 
-        return mapper.converteParaDTO(entidade);
+        return mapper.converteParaDTO(cliente);
     }
 
     /**
