@@ -51,11 +51,11 @@ public class PedidosServiceImpl implements PedidosService {
                 new PedidoInvalidoException("Não é possível criar o pedido para o cliente %d não cadastrado"
                         .formatted(body.clienteId())));
 
-        final var pedido = mapper.converteParaEntidade(cliente);
+        var pedido = mapper.converteParaEntidade(cliente);
         pedido.setProdutos(verificaDisponibilidadeProdutos(body.produtos(), pedido));
 
         log.info("Cadastrando o pedido={}", pedido);
-        pedidosRepository.save(pedido);
+        pedido = pedidosRepository.save(pedido);
 
         return mapper.converteParaDTO(pedido);
     }
