@@ -46,9 +46,9 @@ public class PedidoServiceTest {
         );
     }
 
-    @DisplayName("Deve criar pedido com sucesso quando os dados forem válidos")
     @Test
-    public void testaCriacaoPedido() {
+    @DisplayName("Deve criar pedido com sucesso quando os dados de cadastro forem válidos")
+    public void testaCriacaoPedidoSemErro() {
         var cadastroPedido = PedidoFixture.pedidoCadastroRequest();
 
         when(clientesRepository.findById(cadastroPedido.clienteId())).thenReturn(Optional.of(ClienteFixture.cliente()));
@@ -58,22 +58,31 @@ public class PedidoServiceTest {
 
         when(pedidosRepository.save(any(Pedido.class))).thenReturn(PedidoFixture.pedido());
 
-        assertAll(
-                () -> assertDoesNotThrow(() -> pedidosService.cadastraNovoPedido(cadastroPedido)),
-                () -> {
-                    final var response = pedidosService.cadastraNovoPedido(cadastroPedido);
-                    assertAll(
-                            () -> assertNotNull(response.id()),
-                            () -> assertInstanceOf(PedidoResponse.class, response),
-                            () -> assertEquals(StatusPedido.CONFIRMADO, response.status()),
-                            () -> {
-                                final var now = LocalDateTime.now().format(PedidoFixture.formatter());
-                                assertEquals(now, response.data());
-                            },
-                            () -> assertTrue(response.valorTotal().compareTo(BigDecimal.ONE) > 0)
-                    );
+        assertDoesNotThrow(() -> pedidosService.cadastraNovoPedido(cadastroPedido));
+    }
 
-                }
+    @Test
+    @DisplayName("Quando pedido for criado com sucesso os campos devem ser válidos")
+    void testeCamposPedidoCriado() {
+        var cadastroPedido = PedidoFixture.pedidoCadastroRequest();
+
+        when(clientesRepository.findById(cadastroPedido.clienteId())).thenReturn(Optional.of(ClienteFixture.cliente()));
+        when(produtosRepository.findAllById(
+                cadastroPedido.produtos().stream().map(PedidoProdutoRequest::produtoId).toList())
+        ).thenReturn(ProdutoFixture.listaProdutos());
+
+        when(pedidosRepository.save(any(Pedido.class))).thenReturn(PedidoFixture.pedido());
+
+        final var response = pedidosService.cadastraNovoPedido(cadastroPedido);
+        assertAll(
+                () -> assertNotNull(response.id()),
+                () -> assertInstanceOf(PedidoResponse.class, response),
+                () -> assertEquals(StatusPedido.CONFIRMADO, response.status()),
+                () -> {
+                    final var now = LocalDateTime.now().format(PedidoFixture.formatter());
+                    assertEquals(now, response.data());
+                },
+                () -> assertTrue(response.valorTotal().compareTo(BigDecimal.ONE) > 0)
         );
     }
 }
