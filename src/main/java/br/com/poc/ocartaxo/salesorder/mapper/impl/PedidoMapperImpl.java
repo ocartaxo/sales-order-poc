@@ -47,7 +47,7 @@ public class PedidoMapperImpl implements PedidoMapper {
 
     @Override
     public PedidoResponse converteParaDTO(Pedido pedido) {
-        log.info("Convertendo para DTO resumida, dto={}", pedido);
+        log.info("Convertendo entidade para DTO resumida, dto");
         return new PedidoResponse(
                 pedido.getId(),
                 pedido.getValorTotalPedido(),
@@ -58,7 +58,7 @@ public class PedidoMapperImpl implements PedidoMapper {
 
     @Override
     public PedidoDetalhesResponse converteParaDetalhesDTO(Pedido pedido) {
-        log.info("Converte para para DTO detalhada, dto={}", pedido);
+        log.info("Converte para para DTO detalhada");
         return new PedidoDetalhesResponse(
                 pedido.getEnderecoEntrega(),
                 pedido.getEnderecoCobranca(),
