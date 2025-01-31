@@ -54,8 +54,8 @@ public class PedidosServiceImpl implements PedidosService {
         var pedido = mapper.converteParaEntidade(cliente);
         pedido.setProdutos(verificaDisponibilidadeProdutos(body.produtos(), pedido));
 
-        log.info("Cadastrando o pedido={}", pedido);
         pedido = pedidosRepository.save(pedido);
+        log.info("Pedido cadastrado com sucesso! Pedido: {}", pedido);
 
         return mapper.converteParaDTO(pedido);
     }

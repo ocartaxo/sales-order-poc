@@ -38,8 +38,8 @@ public class ClientesServiceImpl implements ClientesService {
         validadorCliente.validaDadosCadastroCliente(body);
 
         var cliente = mapper.converteParaEntidade(body);
-
         cliente = repository.save(cliente);
+        log.info("Cliente cadastrado com sucesso! Cliente: {}", cliente);
 
         return mapper.converteParaDTO(cliente);
     }
