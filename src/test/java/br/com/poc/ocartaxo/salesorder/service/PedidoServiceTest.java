@@ -6,15 +6,16 @@ import br.com.poc.ocartaxo.salesorder.enums.StatusPedido;
 import br.com.poc.ocartaxo.salesorder.fixture.ClienteFixture;
 import br.com.poc.ocartaxo.salesorder.fixture.PedidoFixture;
 import br.com.poc.ocartaxo.salesorder.fixture.ProdutoFixture;
+import br.com.poc.ocartaxo.salesorder.model.Pedido;
 import br.com.poc.ocartaxo.salesorder.repository.ClientesRepository;
 import br.com.poc.ocartaxo.salesorder.repository.PedidosRepository;
 import br.com.poc.ocartaxo.salesorder.repository.ProdutosRepository;
 import br.com.poc.ocartaxo.salesorder.service.impl.PedidosServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -45,6 +46,7 @@ public class PedidoServiceTest {
         );
     }
 
+    @DisplayName("Deve criar pedido com sucesso quando os dados forem válidos")
     @Test
     public void testaCriacaoPedido() {
         var cadastroPedido = PedidoFixture.pedidoCadastroRequest();
@@ -54,7 +56,7 @@ public class PedidoServiceTest {
                         cadastroPedido.produtos().stream().map(PedidoProdutoRequest::produtoId).toList())
         ).thenReturn(ProdutoFixture.listaProdutos());
 
-        when(produtosRepository.save(any())).thenReturn(PedidoFixture.pedido());
+        when(pedidosRepository.save(any(Pedido.class))).thenReturn(PedidoFixture.pedido());
 
         assertAll(
                 () -> assertDoesNotThrow(() -> pedidosService.cadastraNovoPedido(cadastroPedido)),
@@ -68,7 +70,7 @@ public class PedidoServiceTest {
                                 final var now = LocalDateTime.now().format(PedidoFixture.formatter());
                                 assertEquals(now, response.data());
                             },
-                            () -> assertTrue(response.valorTotal().compareTo(BigDecimal.ZERO) > 0)
+                            () -> assertTrue(response.valorTotal().compareTo(BigDecimal.ONE) > 0)
                     );
 
                 }
