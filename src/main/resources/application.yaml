@@ -3,7 +3,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: postgres
-    url: jdbc:posgtres:${DB_HOST}:${DB_PORT}/${DB_NAME}
+    url: jdbc:postgresql://db:5432/sales-order
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect

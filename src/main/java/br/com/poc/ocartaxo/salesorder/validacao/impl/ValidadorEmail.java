@@ -16,7 +16,7 @@ public class ValidadorEmail {
      * @throws InformacoesClienteInvalidaException Informa que é um e-mail inválido
      */
     public void valida(String email) {
-        if (email.isEmpty() || !(PADRAO.matcher(email).find())) {
+        if (email.isBlank() || !(PADRAO.matcher(email).find())) {
             throw new InformacoesClienteInvalidaException("Email `%s` inválido!".formatted(email));
         }
     }
