@@ -25,4 +25,12 @@ public class ItemPedidoPk implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "produto_id")
     private Produto produto;
+
+    @Override
+    public String toString() {
+        return "ItemPedidoPk{" +
+                "pedidoId=" + pedido.getId() +
+                ", produtoId=" + produto.getId() +
+                '}';
+    }
 }
