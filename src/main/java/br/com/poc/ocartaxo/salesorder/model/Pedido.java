@@ -38,14 +38,8 @@ public class Pedido {
     @Transient
     private BigDecimal totalValorPedido;
 
-
     public BigDecimal getValorTotalPedido() {
         return produtos.stream().map(ItemPedido::getValorTotalProduto).reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    @Transient
-    public int getTotalProdutos() {
-        return produtos.size();
     }
 
 }
