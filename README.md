@@ -3,10 +3,10 @@
 Uma API REST para compras de produtos em uma loja virtual. O sistema permite gerenciar pedidos, produtos e clientes
 cadastrados, por consultas pelas rotas disponibilizadas.
 
-| :placard: Vitrine.dev |                                               |
-|-----------------------|-----------------------------------------------|
-| :sparkles: Nome       | **Sales Order API**                           |
-| :label: Tecnologias   | Java, Spring Boot, Spring Data JPA, Lombok H2 |
+| :placard: Vitrine.dev |                                                      |
+|-----------------------|------------------------------------------------------|
+| :sparkles: Nome       | **Sales Order API**                                  |
+| :label: Tecnologias   | Java, Spring Boot, Spring Data JPA, Lombok, Postgres |
 
 ## Detalhes
 O sistema foi criado utilizando Java 17 e Spring Boot na versão 3.15 e Gradle para gerenciamento de dependências. 
