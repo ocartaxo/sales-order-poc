@@ -1,3 +1,4 @@
+version: '3.8'
 services:
   db:
     container_name: postgres
@@ -10,11 +11,15 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=sales-order
+    networks:
+      - app_network
 
 
   web:
-    image: docker.io/library/sales-order:0.0.1-SNAPSHOT
+    image: "docker.io/library/sales-order:0.0.1-SNAPSHOT"
+    container_name: "sales-order-api"
     ports:
+      - "8080:8080"
       - "8000:8000"
     depends_on:
       - db
@@ -22,7 +27,12 @@ services:
       - DB_HOST=postgres
       - DB_PORT=5432
       - DB_NAME=order-sales
-
+    networks:
+      - app_network
 
 volumes:
   postgres_data:
+
+networks:
+  app_network:
+    driver: bridge
